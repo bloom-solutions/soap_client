@@ -1,3 +1,3 @@
-module SoapClient
+module SOAPClient
   VERSION = "0.1.0"
 end

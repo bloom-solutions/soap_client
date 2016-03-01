@@ -1,5 +1,5 @@
 require "soap_client/version"
 
-module SoapClient
+module SOAPClient
   # Your code goes here...
 end

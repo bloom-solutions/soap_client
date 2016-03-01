@@ -5,7 +5,7 @@ require 'soap_client/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "soap_client"
-  spec.version       = SoapClient::VERSION
+  spec.version       = SOAPClient::VERSION
   spec.authors       = ["Ramon Tayag"]
   spec.email         = ["ramon.tayag@gmail.com"]
 
