@@ -11,6 +11,8 @@ module SOAPClient
       it { is_expected.to have_attribute(:log) }
       it { is_expected.to have_attribute(:logger) }
       it { is_expected.to have_attribute(:proxy, String) }
+      it { is_expected.to have_attribute(:read_timeout, Integer) }
+      it { is_expected.to have_attribute(:open_timeout, Integer) }
     end
 
     describe ".call" do

@@ -16,6 +16,8 @@ describe SOAPClient do
         logger: logger,
         log: true,
         proxy: "https://proxy.com",
+        open_timeout: 200,
+        read_timeout: 100,
       )
 
       expect(client).to be_an_instance_of(SOAPClient::Client)
@@ -25,6 +27,8 @@ describe SOAPClient do
       expect(client.logger).to eq logger
       expect(client.log).to eq true
       expect(client.proxy).to eq "https://proxy.com"
+      expect(client.open_timeout).to eq 200
+      expect(client.read_timeout).to eq 100
     end
   end
 

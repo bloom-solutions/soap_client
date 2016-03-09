@@ -9,6 +9,8 @@ module SOAPClient
     attribute :logger
     attribute :log, Boolean, default: false
     attribute :proxy, String
+    attribute :open_timeout, Integer
+    attribute :read_timeout, Integer
 
     def self.call(*args)
       self.new(*args).()

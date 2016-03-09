@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- `read_timeout` and `open_timeout` to set the timeout values, in seconds, to the SOAP client
+
 ## [0.1.0] - 2016-03-01
 ### Added
 - Initial working version
