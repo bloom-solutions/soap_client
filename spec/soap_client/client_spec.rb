@@ -28,7 +28,9 @@ module SOAPClient
 
     describe "#call" do
       let(:savon_client) { double }
-      let(:soap_response) { double(:soap_response) }
+      let(:savon_response) do
+        instance_double(Savon::Response, xml: "<xml response='true'/>")
+      end
 
       it "makes a call using savon" do
         client = described_class.new({
@@ -44,11 +46,54 @@ module SOAPClient
 
         expect(savon_client).to receive(:call).
           with(client.action, message: client.message).
-          and_return(soap_response)
+          and_return(savon_response)
 
         response = client.()
 
-        expect(response).to eq(soap_response)
+        expect(response).to eq(savon_response)
+      end
+
+      context "logging is turned on" do
+        let(:client) do
+          described_class.new({
+            action: :action,
+            proxy: "something.com",
+            message: {great: "success"},
+            logger: logger,
+            log: true,
+          })
+        end
+        let(:logger) { double }
+        let(:savon_request) do
+          instance_double(HTTPI::Request, body: "<xml request='true'/>")
+        end
+
+        before do
+          allow(BuildSavonAttrs).to receive(:call).with(client.attributes).
+            and_return({attr: 1})
+        end
+
+        it "makes a call using savon and logs request and response" do
+          expect(Savon).to receive(:client).with(attr: 1).
+            and_return(savon_client)
+
+          expect(savon_client).to receive(:build_request).
+            and_return(savon_request)
+
+          expect(logger).to receive(:info).
+            with("Request XML: #{savon_request.body}")
+
+          expect(savon_client).to receive(:call).
+            with(client.action, message: client.message).
+            and_return(savon_response)
+
+          expect(logger).to receive(:info).
+            with("Response XML: #{savon_response.xml}")
+
+          response = client.()
+
+          expect(response).to eq(savon_response)
+        end
       end
     end
 

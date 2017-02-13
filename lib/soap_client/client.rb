@@ -17,7 +17,16 @@ module SOAPClient
     end
 
     def call
-      savon_client.call(action, message: message)
+      if log
+        savon_request = savon_client.build_request(action, message: message)
+        logger.info "Request XML: #{savon_request.body}"
+      end
+
+      savon_response = savon_client.call(action, message: message)
+
+      logger.info("Response XML: #{savon_response.xml}") if log
+
+      savon_response
     end
 
     private
