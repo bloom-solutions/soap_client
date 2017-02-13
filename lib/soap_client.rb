@@ -4,6 +4,7 @@ require "active_support/core_ext/hash/slice"
 require "active_support/core_ext/object/blank"
 require "soap_client/version"
 require "soap_client/client"
+require "soap_client/services/build_savon_attrs"
 
 module SOAPClient
 

@@ -23,17 +23,11 @@ module SOAPClient
     private
 
     def savon_client
-      @savon_client ||= Savon.client(savon_attributes)
+      @savon_client ||= Savon.client(savon_attrs)
     end
 
-    def savon_attributes
-      attrs = attributes.slice(
-        :wsdl,
-        :log,
-        :logger,
-      )
-      attrs[:proxy] = proxy if proxy.present?
-      attrs
+    def savon_attrs
+      BuildSavonAttrs.(attributes)
     end
 
   end

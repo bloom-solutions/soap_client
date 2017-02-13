@@ -17,6 +17,7 @@ module SOAPClient
 
     describe ".call" do
       let(:client) { instance_double(described_class) }
+
       it "instantiates a client and calls `call`" do
         expect(described_class).to receive(:new).with("args").
           and_return(client)
@@ -36,9 +37,10 @@ module SOAPClient
           message: {great: "success"},
         })
 
-        expect(Savon).to receive(:client).
-          with(client.attributes.slice(:wsdl, :log, :logger, :proxy)).
-          and_return(savon_client)
+        expect(BuildSavonAttrs).to receive(:call).with(client.attributes).
+          and_return({attr: 1})
+
+        expect(Savon).to receive(:client).with(attr: 1).and_return(savon_client)
 
         expect(savon_client).to receive(:call).
           with(client.action, message: client.message).
@@ -47,27 +49,6 @@ module SOAPClient
         response = client.()
 
         expect(response).to eq(soap_response)
-      end
-
-      context "proxy is blank" do
-        it "does not set the proxy" do
-          client = described_class.new({
-            action: :action,
-            message: {great: "success"},
-          })
-
-          expect(Savon).to receive(:client).
-            with(client.attributes.slice(:wsdl, :log, :logger)).
-            and_return(savon_client)
-
-          expect(savon_client).to receive(:call).
-            with(client.action, message: client.message).
-            and_return(soap_response)
-
-          response = client.()
-
-          expect(response).to eq(soap_response)
-        end
       end
     end
 
