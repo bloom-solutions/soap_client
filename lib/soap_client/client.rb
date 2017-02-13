@@ -6,7 +6,7 @@ module SOAPClient
     attribute :action, Symbol
     attribute :message, Hash
     attribute :wsdl, String
-    attribute :logger
+    attribute :logger, Object, lazy: true, default: :default_logger
     attribute :log, Boolean, default: false
     attribute :proxy, String
     attribute :open_timeout, Integer
@@ -37,6 +37,10 @@ module SOAPClient
 
     def savon_attrs
       BuildSavonAttrs.(attributes)
+    end
+
+    def default_logger
+      Logger.new(STDOUT)
     end
 
   end
