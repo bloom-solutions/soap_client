@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [TBA]
+## [0.3.0] - 2017-02-13
 ### Added
 - Log in the info level, the request and response XMLs if logging is enabled
 - Logger logs to STDOUT by default
