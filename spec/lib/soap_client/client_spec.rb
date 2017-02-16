@@ -13,6 +13,7 @@ module SOAPClient
       it { is_expected.to have_attribute(:proxy, String) }
       it { is_expected.to have_attribute(:read_timeout, Integer) }
       it { is_expected.to have_attribute(:open_timeout, Integer) }
+      it { is_expected.to have_attribute(:scrub, Array[Hash]) }
     end
 
     describe ".call" do
@@ -28,7 +29,7 @@ module SOAPClient
 
     describe "#call" do
       let(:savon_client) { double }
-      let(:savon_response) do
+      let(:soap_response) do
         instance_double(Savon::Response, xml: "<xml response='true'/>")
       end
 
@@ -46,11 +47,11 @@ module SOAPClient
 
         expect(savon_client).to receive(:call).
           with(client.action, message: client.message).
-          and_return(savon_response)
+          and_return(soap_response)
 
         response = client.()
 
-        expect(response).to eq(savon_response)
+        expect(response).to eq(soap_response)
       end
 
       context "logging is turned on" do
@@ -61,10 +62,14 @@ module SOAPClient
             message: {great: "success"},
             logger: logger,
             log: true,
+            scrub: scrub_directives,
           })
         end
+        let(:scrub_directives) do
+          [{name: {matches: "pass"}}, {name: {matches: /secret/i}}]
+        end
         let(:logger) { double }
-        let(:savon_request) do
+        let(:soap_request) do
           instance_double(HTTPI::Request, body: "<xml request='true'/>")
         end
 
@@ -78,21 +83,18 @@ module SOAPClient
             and_return(savon_client)
 
           expect(savon_client).to receive(:build_request).
-            and_return(savon_request)
-
-          expect(logger).to receive(:info).
-            with("Request XML: #{savon_request.body}")
+            and_return(soap_request)
 
           expect(savon_client).to receive(:call).
             with(client.action, message: client.message).
-            and_return(savon_response)
+            and_return(soap_response)
 
-          expect(logger).to receive(:info).
-            with("Response XML: #{savon_response.xml}")
+          expect(LogXML).to receive(:call).
+            with(logger, soap_request.body, soap_response.xml, scrub_directives)
 
           response = client.()
 
-          expect(response).to eq(savon_response)
+          expect(response).to eq(soap_response)
         end
       end
     end
