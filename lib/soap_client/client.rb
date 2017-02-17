@@ -19,7 +19,8 @@ module SOAPClient
 
     def call
       if log
-        LogXML.(logger, soap_request.body, soap_response.xml, scrub)
+        LogXML.(logger, soap_request.body, scrub)
+        LogXML.(logger, soap_response.xml, scrub)
       end
 
       soap_response

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- Fix: log the request XML if the response throws an error
+
 ## [1.0.0]
 ### Changed
 - Pass scrub directives (of [XMLScrubber](https://github.com/imacchiato/xml_scrubber)) and `log: true` to log request and response XML
