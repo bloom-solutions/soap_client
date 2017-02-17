@@ -90,7 +90,9 @@ module SOAPClient
             and_return(soap_response)
 
           expect(LogXML).to receive(:call).
-            with(logger, soap_request.body, soap_response.xml, scrub_directives)
+            with(logger, soap_request.body, scrub_directives)
+          expect(LogXML).to receive(:call).
+            with(logger, soap_response.xml, scrub_directives)
 
           response = client.()
 
