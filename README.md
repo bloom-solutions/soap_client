@@ -26,6 +26,13 @@ response = SOAPClient.(
   wsdl: "https://service.com?WSDL",
   action: :register,
   message: {name: "Juan Jose"},
+  # SOAPClient uses XmlScrubber to scrub sensitive info. Use like this:
+  log: true,
+  logger: Logger.new("/path/to/log"),
+  scrub: [
+    {name: {matches: /password/i},
+    {name: {matches: /secret/i},
+  ]
 )
 ```
 
